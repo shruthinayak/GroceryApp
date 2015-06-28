@@ -11,7 +11,6 @@ import android.widget.Toolbar;
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.slidetabs.SlidingTabLayout;
 import com.grocery.app.tabswipe.slidetabs.ViewPagerAdapter;
-import com.grocery.app.tabswipe.utilities.Utilities;
 //Initial commit
 
 public class MainActivity extends ActionBarActivity {
@@ -29,7 +28,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Utilities.initializeData();
+
         getActionBar().hide();
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
