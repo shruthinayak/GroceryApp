@@ -12,7 +12,7 @@ import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.slidetabs.SlidingTabLayout;
 import com.grocery.app.tabswipe.slidetabs.ViewPagerAdapter;
 import com.grocery.app.tabswipe.utilities.Utilities;
-
+//Initial commit
 
 public class MainActivity extends ActionBarActivity {
 
