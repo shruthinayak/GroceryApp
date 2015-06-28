@@ -1,4 +1,4 @@
-package com.example.sg0222540.tabswipe;
+package com.grocery.app.tabswipe;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,11 +1,11 @@
-package com.example.sg0222540.tabswipe.slidetabs;
+package com.grocery.app.tabswipe.slidetabs;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.sg0222540.tabswipe.activities.Tab1;
-import com.example.sg0222540.tabswipe.activities.Tab2;
+import com.grocery.app.tabswipe.activities.Tab1;
+import com.grocery.app.tabswipe.activities.Tab2;
 
 /**
  * Created by Edwin on 15/02/2015.

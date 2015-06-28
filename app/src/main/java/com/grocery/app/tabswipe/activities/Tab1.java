@@ -1,4 +1,4 @@
-package com.example.sg0222540.tabswipe.activities;
+package com.grocery.app.tabswipe.activities;
 
 /**
  * Created by SG0222540 on 6/22/2015.
@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.sg0222540.tabswipe.R;
+import com.grocery.app.tabswipe.R;
 
 /**
  * Created by hp1 on 21-01-2015.

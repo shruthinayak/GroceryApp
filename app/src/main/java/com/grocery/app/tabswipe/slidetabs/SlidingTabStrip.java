@@ -1,4 +1,4 @@
-package com.example.sg0222540.tabswipe.slidetabs;
+package com.grocery.app.tabswipe.slidetabs;
 
 /**
  * Created by SG0222540 on 6/22/2015.
@@ -29,8 +29,7 @@ import android.view.View;
         import android.graphics.Paint;
         import android.util.AttributeSet;
         import android.util.TypedValue;
-        import android.view.View;
-        import android.widget.LinearLayout;
+import android.widget.LinearLayout;
 
 class SlidingTabStrip extends LinearLayout {
 

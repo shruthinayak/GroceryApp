@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.sg0222540.tabswipe" >
+    package="com.grocery.app.tabswipe" >
 
     <application
         android:allowBackup="true"

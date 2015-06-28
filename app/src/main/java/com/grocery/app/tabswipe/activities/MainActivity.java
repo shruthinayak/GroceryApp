@@ -1,22 +1,16 @@
-package com.example.sg0222540.tabswipe.activities;
+package com.grocery.app.tabswipe.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import android.support.v4.view.ViewPager;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.support.v7.widget.*;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toolbar;
 
-import com.example.sg0222540.tabswipe.R;
-import com.example.sg0222540.tabswipe.slidetabs.SlidingTabLayout;
-import com.example.sg0222540.tabswipe.slidetabs.ViewPagerAdapter;
+import com.grocery.app.tabswipe.R;
+import com.grocery.app.tabswipe.slidetabs.SlidingTabLayout;
+import com.grocery.app.tabswipe.slidetabs.ViewPagerAdapter;
 
 
 public class MainActivity extends ActionBarActivity {

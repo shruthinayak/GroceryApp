@@ -6,7 +6,7 @@
     tools:context=".MainActivity">
 
 
-    <com.example.sg0222540.tabswipe.slidetabs.SlidingTabLayout
+    <com.grocery.app.tabswipe.slidetabs.SlidingTabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

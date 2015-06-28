@@ -1,4 +1,4 @@
-package com.example.sg0222540.tabswipe.slidetabs;
+package com.grocery.app.tabswipe.slidetabs;
 
 /**
  * Created by SG0222540 on 6/22/2015.
@@ -22,7 +22,6 @@ package com.example.sg0222540.tabswipe.slidetabs;
 
         import android.content.Context;
         import android.graphics.Typeface;
-        import android.os.Build;
         import android.support.v4.view.PagerAdapter;
         import android.support.v4.view.ViewPager;
         import android.util.AttributeSet;
@@ -36,7 +35,7 @@ package com.example.sg0222540.tabswipe.slidetabs;
         import android.widget.LinearLayout;
         import android.widget.TextView;
 
-        import com.example.sg0222540.tabswipe.R;
+        import com.grocery.app.tabswipe.R;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
