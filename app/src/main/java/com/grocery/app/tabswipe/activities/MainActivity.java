@@ -11,7 +11,7 @@ import android.widget.Toolbar;
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.slidetabs.SlidingTabLayout;
 import com.grocery.app.tabswipe.slidetabs.ViewPagerAdapter;
-//Initial commit
+//Initial commit 1
 
 public class MainActivity extends ActionBarActivity {
 
