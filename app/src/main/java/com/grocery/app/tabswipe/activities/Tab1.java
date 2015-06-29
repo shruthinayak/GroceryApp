@@ -14,11 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.grocery.app.tabswipe.R;
-import com.grocery.app.tabswipe.adapters.Adapter;
-import com.grocery.app.tabswipe.models.DataModel;
+import com.grocery.app.tabswipe.adapters.BuyAdapter;
+import com.grocery.app.tabswipe.adapters.PostAdapter;
 import com.grocery.app.tabswipe.utilities.Utilities;
-
-import java.util.ArrayList;
 
 /**
  * Created by hp1 on 21-01-2015.
@@ -27,7 +25,6 @@ public class Tab1 extends Fragment {
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
-    private ArrayList<DataModel> myDataset = new ArrayList<DataModel>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,8 +41,8 @@ public class Tab1 extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        Adapter mAdapter = new Adapter(Utilities.getDataSet());
-        mRecyclerView.setAdapter(mAdapter);
+        BuyAdapter mBuyAdapter = new BuyAdapter(Utilities.getDataSet());
+        mRecyclerView.setAdapter(mBuyAdapter);
         return v;
     }
 }

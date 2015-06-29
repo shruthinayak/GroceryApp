@@ -11,6 +11,7 @@ import android.widget.Toolbar;
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.slidetabs.SlidingTabLayout;
 import com.grocery.app.tabswipe.slidetabs.ViewPagerAdapter;
+import com.grocery.app.tabswipe.utilities.Utilities;
 //Initial commit 1
 
 public class MainActivity extends ActionBarActivity {
@@ -27,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utilities.initializeData();
         setContentView(R.layout.activity_main);
 
         getActionBar().hide();

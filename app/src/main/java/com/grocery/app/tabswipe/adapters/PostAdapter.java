@@ -5,7 +5,7 @@ package com.grocery.app.tabswipe.adapters;
  */
 import java.util.ArrayList;
 
-import android.os.IBinder;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +17,7 @@ import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.models.DataModel;
 import com.grocery.app.tabswipe.utilities.Utilities;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private ArrayList<DataModel> mDataset;
 
     // Provide a reference to the views for each data item
@@ -36,13 +36,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             description = (TextView) v.findViewById(R.id.txtDescription);
             txtQuantity = (TextView) v.findViewById(R.id.txtQuantity);
             btnPlus = (ImageButton) v.findViewById(R.id.btnPlus);
-
+            btnPlus.setBackgroundResource(R.drawable.ic_content_remove_circle);
         }
     }
 
     public void add(int position, DataModel item) {
-        mDataset.add(position, item);
-        notifyItemInserted(position);
+        if(mDataset.contains(item)) {
+            mDataset.get(position).setQuantity(item.getQuantity());
+            notifyDataSetChanged();
+        } else {
+            mDataset.add(position, item);
+            Utilities.addToMyItems(item.getItemName(), item, position, false);
+            notifyItemInserted(position);
+        }
     }
 
     public void remove(String item) {
@@ -52,14 +58,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public Adapter(ArrayList<DataModel> myDataset) {
+    public PostAdapter(ArrayList<DataModel> myDataset) {
         mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public Adapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public PostAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                    int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.buy_leg_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
@@ -69,21 +75,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final String itemName = mDataset.get(position).getItemName();
         holder.itemName.setText(itemName);
         holder.description.setText(mDataset.get(position).getDescription());
         holder.txtQuantity.setText(mDataset.get(position).getQuantity());
-        holder.btnPlus.setOnClickListener(new View.OnClickListener() {
+        /*holder.btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int quantity = Integer.parseInt(holder.txtQuantity.getText().toString());
                 holder.txtQuantity.setText(String.valueOf(quantity+1));
-                Utilities.addToMyItems(itemName, quantity+1);
+                mDataset.get(position).setQuantity(String.valueOf(quantity + 1));
+                Utilities.addToMyItems(itemName, mDataset.get(position));
             }
-        });
+        });*/
         /*holder.itemName.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,5 +104,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public int getItemCount() {
         return mDataset.size();
     }
+
+
+
 
 }
