@@ -29,24 +29,42 @@
         android:text="Kawan&apos;s chapathi"
         android:textSize="18sp" />
 
-
-    <ImageButton
-        android:id="@+id/btnPlus"
+    <LinearLayout
+        android:id="@+id/lytInner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/ic_launcher"
-        android:visibility="visible"/>
+        android:layout_alignParentTop="true">
 
+        <ImageButton
+            android:id="@+id/btnPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_launcher"
+            android:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/btnMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_content_remove_circle"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txtQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/btnPlus"
-        android:layout_toStartOf="@+id/btnPlus"
+        android:layout_toLeftOf="@+id/lytInner"
+        android:layout_toStartOf="@+id/lytInner"
         android:text="1"
         android:textSize="45sp" />
 

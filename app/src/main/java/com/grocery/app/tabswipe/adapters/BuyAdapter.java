@@ -28,6 +28,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
         public TextView description;
         public TextView txtQuantity;
         public ImageButton btnPlus;
+        public ImageButton btnMinus;
 
         public ViewHolder(View v) {
             super(v);
@@ -35,7 +36,9 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
             description = (TextView) v.findViewById(R.id.txtDescription);
             txtQuantity = (TextView) v.findViewById(R.id.txtQuantity);
             btnPlus = (ImageButton) v.findViewById(R.id.btnPlus);
-            btnPlus.setBackgroundResource(R.drawable.ic_launcher);
+            btnMinus = (ImageButton) v.findViewById(R.id.btnMinus);
+            btnMinus.setVisibility(View.GONE);
+            btnPlus.setVisibility(View.VISIBLE);
         }
     }
 
@@ -61,7 +64,6 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
                                                    int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.buy_leg_item, parent, false);
-        // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -69,8 +71,6 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         final String itemName = mDataset.get(position).getItemName();
         holder.itemName.setText(itemName);
         holder.description.setText(mDataset.get(position).getDescription());
@@ -81,18 +81,12 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
                 int quantity = Integer.parseInt(holder.txtQuantity.getText().toString());
                 holder.txtQuantity.setText(String.valueOf(quantity+1));
                 mDataset.get(position).setQuantity(String.valueOf(quantity + 1));
-                Utilities.addToMyItems(itemName, mDataset.get(position),position, true);
+                Utilities.addToMyItems(itemName, mDataset.get(position),position);
             }
         });
-        /*holder.itemName.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                remove(name);
-            }
-        });*/
+
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset.size();

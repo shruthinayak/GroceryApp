@@ -3,6 +3,7 @@ package com.grocery.app.tabswipe.adapters;
 /**
  * Created by SG0222540 on 6/28/2015.
  */
+
 import java.util.ArrayList;
 
 import android.speech.tts.UtteranceProgressListener;
@@ -18,6 +19,7 @@ import com.grocery.app.tabswipe.models.DataModel;
 import com.grocery.app.tabswipe.utilities.Utilities;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
+    private boolean buyFlag;
     private ArrayList<DataModel> mDataset;
 
     // Provide a reference to the views for each data item
@@ -29,6 +31,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public TextView description;
         public TextView txtQuantity;
         public ImageButton btnPlus;
+        public ImageButton btnMinus;
 
         public ViewHolder(View v) {
             super(v);
@@ -36,18 +39,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             description = (TextView) v.findViewById(R.id.txtDescription);
             txtQuantity = (TextView) v.findViewById(R.id.txtQuantity);
             btnPlus = (ImageButton) v.findViewById(R.id.btnPlus);
-            btnPlus.setBackgroundResource(R.drawable.ic_content_remove_circle);
+            btnMinus = (ImageButton) v.findViewById(R.id.btnMinus);
+            btnPlus.setVisibility(View.GONE);
+            btnMinus.setVisibility(View.VISIBLE);
+
         }
     }
 
-    public void add(int position, DataModel item) {
-        if(mDataset.contains(item)) {
+    public void add(DataModel item) {
+        if (mDataset.contains(item)) {
+            int position = mDataset.indexOf(item);
             mDataset.get(position).setQuantity(item.getQuantity());
             notifyDataSetChanged();
         } else {
-            mDataset.add(position, item);
-            Utilities.addToMyItems(item.getItemName(), item, position, false);
-            notifyItemInserted(position);
+            mDataset.add(mDataset.size(), item);
+            notifyItemInserted(mDataset.size());
         }
     }
 
@@ -65,7 +71,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     // Create new views (invoked by the layout manager)
     @Override
     public PostAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                    int viewType) {
+                                                     int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.buy_leg_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
@@ -82,13 +88,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.itemName.setText(itemName);
         holder.description.setText(mDataset.get(position).getDescription());
         holder.txtQuantity.setText(mDataset.get(position).getQuantity());
-        /*holder.btnPlus.setOnClickListener(new View.OnClickListener() {
+        /*holder.btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int quantity = Integer.parseInt(holder.txtQuantity.getText().toString());
-                holder.txtQuantity.setText(String.valueOf(quantity+1));
-                mDataset.get(position).setQuantity(String.valueOf(quantity + 1));
-                Utilities.addToMyItems(itemName, mDataset.get(position));
+                if (quantity - 1 == 0) {
+                    remove(itemName);
+                } else {
+                    holder.txtQuantity.setText(String.valueOf(quantity - 1));
+                    mDataset.get(position).setQuantity(String.valueOf(quantity - 1));
+                    Utilities.addToMyItems(itemName, mDataset.get(position));
+                }
             }
         });*/
         /*holder.itemName.setOnClickListener(new OnClickListener() {
@@ -104,8 +114,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public int getItemCount() {
         return mDataset.size();
     }
-
-
 
 
 }

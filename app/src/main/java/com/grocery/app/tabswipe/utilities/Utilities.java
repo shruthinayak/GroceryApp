@@ -6,9 +6,6 @@ import com.grocery.app.tabswipe.models.DataModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by SG0222540 on 6/28/2015.
- */
 public class Utilities {
     static ArrayList<DataModel> myDataset = new ArrayList<DataModel>();
     static HashMap<String, DataModel> myItems = new HashMap<String, DataModel>();
@@ -30,20 +27,21 @@ public class Utilities {
         return new ArrayList<>(myItems.values());
     }
 
-    public static void addToMyItems(String itemName, DataModel d, int position, boolean flag) {
-        if (flag) {
-            if (myItems.containsKey(itemName)) {
-                int q = Integer.parseInt(myItems.get(itemName).getQuantity()) + 1;
-                myItems.get(itemName).setQuantity(String.valueOf(q));
-                //d.setQuantity(String.valueOf(q));
-                mPostAdapter.add(position, myItems.get(itemName));
-            } else {
-                myItems.put(itemName, new DataModel(itemName, d.getDescription(), "1"));
-                mPostAdapter.add(mPostAdapter.getItemCount(), new DataModel(itemName, d.getDescription(), "1"));
-            }
+    public static void addToMyItems(String itemName, DataModel d, int position) {
+        if (myItems.containsKey(itemName)) {
+            int q = Integer.parseInt(myItems.get(itemName).getQuantity()) + 1;
+            myItems.get(itemName).setQuantity(String.valueOf(q));
+            mPostAdapter.add(myItems.get(itemName));
         } else {
-            myItems.put(itemName, d);
+            myItems.put(itemName, new DataModel(itemName, d.getDescription(), "1"));
+            mPostAdapter.add(new DataModel(itemName, d.getDescription(), "1"));
         }
     }
-
 }
+   /* public static void decrementInTotalDataSet(String itemName, DataModel d, int position, boolean flag) {
+            for(DataModel d: myDataset){
+                if(d.getItemName().equals(itemName)){
+                    d.setQuantity(Integer.parseInt(d.getQuantity())-1);
+                }
+            }
+    }*/

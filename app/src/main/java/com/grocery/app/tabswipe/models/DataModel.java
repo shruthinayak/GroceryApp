@@ -37,4 +37,16 @@ public class DataModel {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof DataModel){
+            DataModel d = (DataModel) o;
+            if(this.getItemName().equals(d.getItemName()) && this.getDescription().equals(d.getDescription())){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
