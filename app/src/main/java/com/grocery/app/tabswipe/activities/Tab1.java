@@ -65,7 +65,7 @@ public class Tab1 extends Fragment {
             jsonService.getSomeContent(new Callback<DataModel>() {
                 @Override
                 public void success(DataModel dataModel, Response response) {
-                    Utilities.mBuyAdapter.add(Utilities.mBuyAdapter.getItemCount(),dataModel);
+                    Utilities.mBuyAdapter.add(dataModel);
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
 
