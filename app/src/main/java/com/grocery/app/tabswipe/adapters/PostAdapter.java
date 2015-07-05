@@ -57,10 +57,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
     }
 
-    public void remove(String item) {
+    public void remove(DataModel item) {
         int position = mDataset.indexOf(item);
-        mDataset.remove(position);
-        notifyItemRemoved(position);
+        int q = Integer.parseInt(item.getQuantity());
+        if(q>=1){
+            mDataset.get(position).setQuantity(String.valueOf(q));
+        } else{
+            mDataset.remove(position);
+        }
+        notifyDataSetChanged();
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -88,25 +93,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.itemName.setText(itemName);
         holder.description.setText(mDataset.get(position).getDescription());
         holder.txtQuantity.setText(mDataset.get(position).getQuantity());
-        /*holder.btnMinus.setOnClickListener(new View.OnClickListener() {
+        holder.btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int quantity = Integer.parseInt(holder.txtQuantity.getText().toString());
-                if (quantity - 1 == 0) {
-                    remove(itemName);
-                } else {
-                    holder.txtQuantity.setText(String.valueOf(quantity - 1));
-                    mDataset.get(position).setQuantity(String.valueOf(quantity - 1));
-                    Utilities.addToMyItems(itemName, mDataset.get(position));
-                }
+                Utilities.removeFromMyItems(mDataset.get(position).getItemName());
             }
-        });*/
-        /*holder.itemName.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                remove(name);
-            }
-        });*/
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
