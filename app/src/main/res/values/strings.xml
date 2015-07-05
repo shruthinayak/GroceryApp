@@ -6,4 +6,7 @@
     <string name="title_activity_page_view">PageViewActivity</string>
     <string name="btn_submit_text">Submit</string>
     <string name="btn_add_text">Add</string>
+    <string name="item_name_text">Item Name</string>
+    <string name="item_desc_text">Item Description</string>
+    <string name="item_qty_text">Item Quantity</string>
 </resources>
