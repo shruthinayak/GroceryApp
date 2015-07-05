@@ -42,9 +42,15 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
         }
     }
 
-    public void add(int position, DataModel item) {
-        mDataset.add(position, item);
-        notifyItemInserted(position);
+    public void add(DataModel item) {
+        if (mDataset.contains(item)) {
+            int position = mDataset.indexOf(item);
+            mDataset.get(position).setQuantity(item.getQuantity());
+            notifyDataSetChanged();
+        } else {
+            mDataset.add(mDataset.size(), item);
+            notifyItemInserted(mDataset.size());
+        }
     }
 
     public void remove(DataModel item) {
