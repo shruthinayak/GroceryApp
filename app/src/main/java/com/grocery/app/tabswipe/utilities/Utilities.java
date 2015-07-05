@@ -17,6 +17,13 @@ public class Utilities {
         myDataset.add(new DataModel("Shredded coconut", "nice, healthy, frozen", "1"));
         myDataset.add(new DataModel("Rice bag 20lb Grain market", "healthy", "1"));
         myDataset.add(new DataModel("Parle-G", "G maane genius", "1"));
+        myDataset.add(new DataModel("Dal", "Yellow Dal", "1"));
+        myDataset.add(new DataModel("Maggi", "RIP", "1"));
+        myDataset.add(new DataModel("Saabudhana", "Best for vada", "1"));
+        myDataset.add(new DataModel("Maiyas", "Rare find in US", "1"));
+        myDataset.add(new DataModel("Haldirams", "Was better in India", "1"));
+        myDataset.add(new DataModel("MTR", "The hated brand", "1"));
+
     }
 
     public static ArrayList<DataModel> getDataSet() {

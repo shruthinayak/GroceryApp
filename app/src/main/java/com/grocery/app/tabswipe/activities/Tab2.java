@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.adapters.PostAdapter;
@@ -41,6 +42,9 @@ public class Tab2 extends Fragment {
         // specify an adapter (see also next example)
         Utilities.mPostAdapter = new PostAdapter(Utilities.getMyItems());
         mRecyclerView.setAdapter(Utilities.mPostAdapter);
+
+        //function to add items
+        //Button btn_add = (Button)
         return v;
     }
 }
