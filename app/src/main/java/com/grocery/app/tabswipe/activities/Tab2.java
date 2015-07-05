@@ -51,16 +51,16 @@ public class Tab2 extends Fragment {
         mRecyclerView.setAdapter(Utilities.mPostAdapter);
 
         //function to add items
-        Button btn_add = (Button) v.findViewById(R.id.btn_add);
-        btn_add.setOnClickListener(new View.OnClickListener() {
+        Button btnAdd = (Button) v.findViewById(R.id.btn_add);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder theDialogue = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View layout = inflater.inflate(R.layout.add_layout, null);
-                final EditText etxt_item_name = (EditText) layout.findViewById(R.id.etxt_item_name);
-                final EditText etxt_item_desc = (EditText) layout.findViewById(R.id.etxt_item_desc);
-                final EditText etxt_item_qty = (EditText) layout.findViewById(R.id.etxt_item_qty);
+                final EditText edtItemName = (EditText) layout.findViewById(R.id.etxt_item_name);
+                final EditText edtItemDesc = (EditText) layout.findViewById(R.id.etxt_item_desc);
+                final EditText edtItemQty = (EditText) layout.findViewById(R.id.etxt_item_qty);
                 theDialogue.setView(layout);
                 theDialogue.setTitle("Add Item");
                 theDialogue.setMessage("Enter Details of the product");
@@ -69,12 +69,14 @@ public class Tab2 extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        String item_name = etxt_item_name.getText().toString();
-                        String item_desc = etxt_item_desc.getText().toString();
-                        String item_qty = etxt_item_qty.getText().toString();
-                        DataModel add_data = new DataModel(item_name,item_desc,item_qty);
-                        Utilities.addToMyItems(item_name,add_data,0);
-                        Toast.makeText(getActivity(), "Clicked OK", Toast.LENGTH_SHORT).show();
+                        String itemName = edtItemName.getText().toString();
+                        String itemDesc = edtItemDesc.getText().toString();
+                        String itemQty = edtItemQty.getText().toString();
+                        if(!itemName.isEmpty() && !itemDesc.isEmpty() && !itemQty.isEmpty()) {
+                            DataModel add_data = new DataModel(itemName, itemDesc, itemQty);
+                            Utilities.addToMyItems(itemName, add_data);
+                            Toast.makeText(getActivity(), "Added Successfully", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
                 theDialogue.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
