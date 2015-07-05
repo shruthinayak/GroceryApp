@@ -47,10 +47,15 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
         notifyItemInserted(position);
     }
 
-    public void remove(String item) {
+    public void remove(DataModel item) {
         int position = mDataset.indexOf(item);
-        mDataset.remove(position);
-        notifyItemRemoved(position);
+        int q = Integer.parseInt(item.getQuantity());
+        if(q>=2){
+            mDataset.get(position).setQuantity(String.valueOf(q));
+        } else{
+            mDataset.remove(position);
+        }
+        notifyDataSetChanged();
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -81,7 +86,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
                 int quantity = Integer.parseInt(holder.txtQuantity.getText().toString());
                 holder.txtQuantity.setText(String.valueOf(quantity+1));
                 mDataset.get(position).setQuantity(String.valueOf(quantity + 1));
-                Utilities.addToMyItems(itemName, mDataset.get(position),position);
+                Utilities.addToMyItems(itemName, mDataset.get(position));
             }
         });
 

@@ -1,5 +1,6 @@
 package com.grocery.app.tabswipe.utilities;
 
+import com.grocery.app.tabswipe.adapters.BuyAdapter;
 import com.grocery.app.tabswipe.adapters.PostAdapter;
 import com.grocery.app.tabswipe.models.DataModel;
 
@@ -10,6 +11,7 @@ public class Utilities {
     static ArrayList<DataModel> myDataset = new ArrayList<DataModel>();
     static HashMap<String, DataModel> myItems = new HashMap<String, DataModel>();
     public static PostAdapter mPostAdapter;
+    public static BuyAdapter mBuyAdapter;
 
     public static void initializeData() {
         myDataset.clear();
@@ -34,7 +36,7 @@ public class Utilities {
         return new ArrayList<>(myItems.values());
     }
 
-    public static void addToMyItems(String itemName, DataModel d, int position) {
+    public static void addToMyItems(String itemName, DataModel d) {
         if (myItems.containsKey(itemName)) {
             int q = Integer.parseInt(myItems.get(itemName).getQuantity()) + 1;
             myItems.get(itemName).setQuantity(String.valueOf(q));
@@ -44,11 +46,16 @@ public class Utilities {
             mPostAdapter.add(new DataModel(itemName, d.getDescription(), "1"));
         }
     }
+
+    public static void removeFromMyItems(String itemName) {
+        int q = Integer.parseInt(myItems.get(itemName).getQuantity()) - 1;
+        if (q == 0) {
+            myItems.remove(itemName);
+        } else {
+            myItems.get(itemName).setQuantity(String.valueOf(q));
+        }
+        mBuyAdapter.remove(myItems.get(itemName));
+        mPostAdapter.remove(myItems.get(itemName));
+    }
 }
-   /* public static void decrementInTotalDataSet(String itemName, DataModel d, int position, boolean flag) {
-            for(DataModel d: myDataset){
-                if(d.getItemName().equals(itemName)){
-                    d.setQuantity(Integer.parseInt(d.getQuantity())-1);
-                }
-            }
-    }*/
+
