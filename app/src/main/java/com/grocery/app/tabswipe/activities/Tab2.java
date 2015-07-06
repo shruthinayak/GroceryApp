@@ -12,9 +12,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,12 +29,21 @@ import com.grocery.app.tabswipe.adapters.PostAdapter;
 import com.grocery.app.tabswipe.models.DataModel;
 import com.grocery.app.tabswipe.utilities.Utilities;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Created by hp1 on 21-01-2015.
  */
 public class Tab2 extends Fragment {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
+    private AlertDialog.Builder theDialogue;
+    private AutoCompleteTextView edtItemName;
+    private EditText edtItemDesc;
+    private EditText edtItemQty;
+    private Button btnOk;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,17 +63,29 @@ public class Tab2 extends Fragment {
         Utilities.mPostAdapter = new PostAdapter(Utilities.getMyItems());
         mRecyclerView.setAdapter(Utilities.mPostAdapter);
 
+
         //function to add items
         Button btnAdd = (Button) v.findViewById(R.id.btn_add);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder theDialogue = new AlertDialog.Builder(getActivity());
+                theDialogue = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View layout = inflater.inflate(R.layout.add_layout, null);
-                final EditText edtItemName = (EditText) layout.findViewById(R.id.etxt_item_name);
-                final EditText edtItemDesc = (EditText) layout.findViewById(R.id.etxt_item_desc);
-                final EditText edtItemQty = (EditText) layout.findViewById(R.id.etxt_item_qty);
+                edtItemName = (AutoCompleteTextView) layout.findViewById(R.id.etxt_item_name);
+                edtItemDesc = (EditText) layout.findViewById(R.id.etxt_item_desc);
+                edtItemQty = (EditText) layout.findViewById(R.id.etxt_item_qty);
+                edtItemName.addTextChangedListener(mDateEntryWatcher);
+                edtItemDesc.addTextChangedListener(mDateEntryWatcher);
+                edtItemQty.addTextChangedListener(mDateEntryWatcher);
+                ArrayList<String> names = new ArrayList<String>();
+                for(DataModel d : Utilities.myDataset){
+                    names.add(d.getItemName());
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1,names);
+                edtItemName.setAdapter(adapter);
                 theDialogue.setView(layout);
                 theDialogue.setTitle("Add Item");
                 theDialogue.setMessage("Enter Details of the product");
@@ -72,22 +97,73 @@ public class Tab2 extends Fragment {
                         String itemName = edtItemName.getText().toString();
                         String itemDesc = edtItemDesc.getText().toString();
                         String itemQty = edtItemQty.getText().toString();
-                        if(!itemName.isEmpty() && !itemDesc.isEmpty() && !itemQty.isEmpty()) {
+                        if (!itemName.isEmpty() && !itemDesc.isEmpty() && !itemQty.isEmpty()) {
                             DataModel add_data = new DataModel(itemName, itemDesc, itemQty);
                             Utilities.addToMyItems(itemName, add_data);
                             Toast.makeText(getActivity(), "Added Successfully", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
                 theDialogue.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getActivity(), "Clicked Cancel", Toast.LENGTH_SHORT).show();
                     }
                 });
+                AlertDialog alertDialog = theDialogue.create();
+                alertDialog.show();
+                btnOk = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                btnOk.setEnabled(false);
+            }
+        });
+
+        Button btnSubmit = (Button) v.findViewById(R.id.btn_submit);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                theDialogue = new AlertDialog.Builder(getActivity());
+                theDialogue.setTitle("SUBMIT");
+                theDialogue.setMessage("Are you sure?");
+
+                theDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                            Toast.makeText(getActivity(), "Submitted Successfully", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                theDialogue.setNegativeButton("Review", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getActivity(), "Clicked Review", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 theDialogue.show();
+
             }
         });
         return v;
     }
+
+    private TextWatcher mDateEntryWatcher = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if(edtItemName.length()!=0 && edtItemDesc.length()!=0 && edtItemQty.length()!=0){
+                btnOk.setEnabled(true);
+            }
+            else {
+                btnOk.setEnabled(false);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+    };
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Utilities {
-    static ArrayList<DataModel> myDataset = new ArrayList<DataModel>();
+    public static ArrayList<DataModel> myDataset = new ArrayList<DataModel>();
     static HashMap<String, DataModel> myItems = new HashMap<String, DataModel>();
     public static PostAdapter mPostAdapter;
     public static BuyAdapter mBuyAdapter;
