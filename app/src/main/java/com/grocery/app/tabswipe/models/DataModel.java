@@ -1,33 +1,65 @@
 package com.grocery.app.tabswipe.models;
 
-/**
- * Created by SG0222540 on 6/28/2015.
- */
 public class DataModel {
-    private String itemName;
-    private String quantity;
-    private String description;
 
-    public DataModel(String itemName, String description, String quantity) {
-        this.itemName = itemName;
-        this.quantity = quantity;
-        this.description = description;
+
+    private String item_id;
+    private String item_name;
+    private String total_qty;
+    private String description;
+    private String unitPrice;
+    public String getUnitPrice() {
+        return unitPrice;
     }
 
+    public void setUnitPrice(String unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public String getTotal_qty() {
+        return total_qty;
+    }
+
+    public void setTotal_qty(String total_qty) {
+        this.total_qty = total_qty;
+    }
+
+    public String getItem_name() {
+        return item_name;
+    }
+
+    public void setItem_name(String item_name) {
+        this.item_name = item_name;
+    }
+
+
+
+    public DataModel(String itemName, String description, String quantity) {
+        this.item_name = itemName;
+        this.description = description;
+        this.total_qty = quantity;
+    }
+    public String getItem_id() {
+        return item_id;
+    }
+
+    public void setItem_id(String item_id) {
+        this.item_id = item_id;
+    }
     public String getItemName() {
-        return itemName;
+        return item_name;
     }
 
     public void setItemName(String itemName) {
-        this.itemName = itemName;
+        this.item_name = itemName;
     }
 
     public String getQuantity() {
-        return quantity;
+        return total_qty;
     }
 
     public void setQuantity(String quantity) {
-        this.quantity = quantity;
+        this.total_qty = quantity;
     }
 
     public String getDescription() {
@@ -39,10 +71,10 @@ public class DataModel {
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o instanceof DataModel){
+    public boolean equals(Object o) {
+        if (o instanceof DataModel) {
             DataModel d = (DataModel) o;
-            if(this.getItemName().equals(d.getItemName()) && this.getDescription().equals(d.getDescription())){
+            if (this.getItemName().equals(d.getItemName()) && this.getDescription().equals(d.getDescription())) {
                 return true;
             }
         }

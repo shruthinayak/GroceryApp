@@ -3,8 +3,6 @@ package com.grocery.app.tabswipe.communicate;
 
 import android.app.Application;
 
-import com.grocery.app.tabswipe.communicate.JsonService;
-
 import retrofit.RestAdapter;
 
 

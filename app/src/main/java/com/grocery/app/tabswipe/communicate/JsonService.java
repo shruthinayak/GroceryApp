@@ -13,6 +13,6 @@ import retrofit.http.Path;
 public interface JsonService {
 
     @GET("/")
-    public void getSomeContent(Callback<DataModel> d);
+    public void getSomeContent(Callback<List<DataModel>> d);
 
 }

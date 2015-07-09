@@ -9,16 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.adapters.BuyAdapter;
-import com.grocery.app.tabswipe.adapters.PostAdapter;
 import com.grocery.app.tabswipe.communicate.JsonService;
 import com.grocery.app.tabswipe.communicate.RetrofitSettings;
 import com.grocery.app.tabswipe.models.DataModel;
 import com.grocery.app.tabswipe.utilities.Utilities;
+
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -62,16 +61,18 @@ public class Tab1 extends Fragment {
         public void load(RetrofitSettings app) {
 
             JsonService jsonService = app.getJsonService();
-            jsonService.getSomeContent(new Callback<DataModel>() {
+            jsonService.getSomeContent(new Callback<List<DataModel>>() {
                 @Override
-                public void success(DataModel dataModel, Response response) {
-                    Utilities.mBuyAdapter.add(dataModel);
+                public void success(List<DataModel> dataModel, Response response) {
+                    for(DataModel d: dataModel) {
+                        Utilities.mBuyAdapter.add(d);
+                    }
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
         }
