@@ -17,6 +17,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -79,13 +80,22 @@ public class Tab2 extends Fragment {
                 edtItemDesc.addTextChangedListener(mDateEntryWatcher);
                 edtItemQty.addTextChangedListener(mDateEntryWatcher);
                 ArrayList<String> names = new ArrayList<String>();
-                for(DataModel d : Utilities.myDataset){
-                    names.add(d.getItemName());
+                for(String d : Utilities.myDataset.keySet()){
+                    names.add(d);
                 }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_list_item_1,names);
                 edtItemName.setAdapter(adapter);
+                edtItemName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                        String selection = (String)adapterView.getItemAtPosition(position);
+                        DataModel d = Utilities.myDataset.get(selection);
+                        edtItemDesc.setText(d.getDescription());
+                        edtItemDesc.setEnabled(false);
+                    }
+                });
                 theDialogue.setView(layout);
                 theDialogue.setTitle("Add Item");
                 theDialogue.setMessage("Enter Details of the product");
