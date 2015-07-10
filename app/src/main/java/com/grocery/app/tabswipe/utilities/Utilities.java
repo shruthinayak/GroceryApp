@@ -6,30 +6,33 @@ import com.grocery.app.tabswipe.models.DataModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Utilities {
-    static ArrayList<DataModel> myDataset = new ArrayList<DataModel>();
+    public static HashMap<String,DataModel> myDataset = new HashMap<String,DataModel>();
     static HashMap<String, DataModel> myItems = new HashMap<String, DataModel>();
     public static PostAdapter mPostAdapter;
     public static BuyAdapter mBuyAdapter;
 
     public static void initializeData() {
+
         myDataset.clear();
-        myDataset.add(new DataModel("Kawan's Chapathi", "nice, healthy, frozen", "1"));
-        myDataset.add(new DataModel("Shredded coconut", "nice, healthy, frozen", "1"));
-        myDataset.add(new DataModel("Rice bag 20lb Grain market", "healthy", "1"));
-        myDataset.add(new DataModel("Parle-G", "G maane genius", "1"));
-        myDataset.add(new DataModel("Dal", "Yellow Dal", "1"));
-        myDataset.add(new DataModel("Maggi", "RIP", "1"));
-        myDataset.add(new DataModel("Saabudhana", "Best for vada", "1"));
-        myDataset.add(new DataModel("Maiyas", "Rare find in US", "1"));
-        myDataset.add(new DataModel("Haldirams", "Was better in India", "1"));
-        myDataset.add(new DataModel("MTR", "The hated brand", "1"));
+        myDataset.put("Kawan's Chapathi", new DataModel("Kawan's Chapathi", "nice, healthy, frozen", "1"));
+        myDataset.put("Shredded coconut", new DataModel("Shredded coconut", "nice, healthy, frozen", "1"));
+        myDataset.put("Rice bag 20lb Grain market", new DataModel("Rice bag 20lb Grain market", "healthy", "1"));
+        myDataset.put("Parle-G", new DataModel("Parle-G", "G maane genius", "1"));
+        myDataset.put("Dal", new DataModel("Dal", "Yellow Dal", "1"));
+        myDataset.put("Maggi", new DataModel("Maggi", "RIP", "1"));
+        myDataset.put("Saabudhana", new DataModel("Saabudhana", "Best for vada", "1"));
+        myDataset.put("Maiyas", new DataModel("Maiyas", "Rare find in US", "1"));
+        myDataset.put("Haldirams", new DataModel("Haldirams", "Was better in India", "1"));
+        myDataset.put("MTR", new DataModel("MTR", "The hated brand", "1"));
 
     }
 
     public static ArrayList<DataModel> getDataSet() {
-        return myDataset;
+        ArrayList<DataModel> objs = new ArrayList<DataModel>(myDataset.values());
+        return objs;
     }
 
     public static ArrayList<DataModel> getMyItems() {
