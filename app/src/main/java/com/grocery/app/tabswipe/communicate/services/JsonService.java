@@ -1,4 +1,4 @@
-package com.grocery.app.tabswipe.communicate;
+package com.grocery.app.tabswipe.communicate.services;
 
 import com.grocery.app.tabswipe.models.DataModel;
 

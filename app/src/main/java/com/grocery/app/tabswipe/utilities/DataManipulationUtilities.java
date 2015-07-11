@@ -1,18 +1,31 @@
 package com.grocery.app.tabswipe.utilities;
 
 import com.grocery.app.tabswipe.adapters.BuyAdapter;
+import com.grocery.app.tabswipe.adapters.BuyDetailViewAdapter;
 import com.grocery.app.tabswipe.adapters.PostAdapter;
+import com.grocery.app.tabswipe.models.RequestorDetails;
 import com.grocery.app.tabswipe.models.DataModel;
+import com.grocery.app.tabswipe.models.Requestor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Utilities {
-    public static HashMap<String,DataModel> myDataset = new HashMap<String,DataModel>();
+public class DataManipulationUtilities {
+    public static HashMap<String, DataModel> myDataset = new HashMap<String, DataModel>();
     static HashMap<String, DataModel> myItems = new HashMap<String, DataModel>();
     public static PostAdapter mPostAdapter;
     public static BuyAdapter mBuyAdapter;
+    public static BuyDetailViewAdapter mBuyerDetailsAdapter;
+    //item-id, buyerslist
+    public static HashMap<String, RequestorDetails> buyerDetails = new HashMap<>();
+    private static List<Requestor> requestors = new ArrayList<>();
+
+    public static void initializeBuyerItems() {
+        requestors.add(new Requestor("Shruthi Nayak", "usr100", "rn.shruthi@gmail.com", "1", false, false));
+        requestors.add(new Requestor("Jithendra", "usr101", "jithendra.jayaram@gmail.com", "1", false, false));
+        buyerDetails.put("100", new RequestorDetails("100", "2", requestors));
+    }
 
     public static void initializeData() {
 
@@ -59,6 +72,28 @@ public class Utilities {
         }
         mBuyAdapter.remove(myItems.get(itemName));
         mPostAdapter.remove(myItems.get(itemName));
+    }
+
+    public static void deleteFromMyItems(String itemName, int pos, boolean deleteFlag) {
+        int q = Integer.parseInt(myItems.get(itemName).getQuantity());
+        int f = Integer.parseInt(myDataset.get(itemName).getQuantity());
+
+        if (deleteFlag) {
+            myDataset.get(itemName).setQuantity(String.valueOf(f - q));
+            myItems.get(itemName).setQuantity("0");
+            mPostAdapter.remove(myItems.get(itemName));
+            mPostAdapter.notifyItemRemoved(pos);
+            myItems.remove(itemName);
+        } else {
+            myDataset.get(itemName).setQuantity(String.valueOf(f - 1));
+            myItems.get(itemName).setQuantity(String.valueOf(q - 1));
+            mPostAdapter.notifyDataSetChanged();
+        }
+        mBuyAdapter.notifyDataSetChanged();
+    }
+
+    public static RequestorDetails getBuyerDetailsForItemId(String itemId) {
+        return buyerDetails.get(itemId);
     }
 }
 

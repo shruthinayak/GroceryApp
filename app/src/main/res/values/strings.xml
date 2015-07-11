@@ -9,4 +9,6 @@
     <string name="item_name_text">Item Name</string>
     <string name="item_desc_text">Item Description</string>
     <string name="item_qty_text">Item Quantity</string>
+    <string name="title_activity_splitwise_login">SplitwiseLogin</string>
+    <string name="title_activity_buy_list_detail_view">BuyListDetailViewActivity</string>
 </resources>

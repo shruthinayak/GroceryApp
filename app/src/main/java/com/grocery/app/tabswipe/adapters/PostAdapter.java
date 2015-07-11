@@ -6,7 +6,6 @@ package com.grocery.app.tabswipe.adapters;
 
 import java.util.ArrayList;
 
-import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import android.widget.TextView;
 
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.models.DataModel;
-import com.grocery.app.tabswipe.utilities.Utilities;
+import com.grocery.app.tabswipe.utilities.DataManipulationUtilities;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private boolean buyFlag;
@@ -32,6 +31,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public TextView txtQuantity;
         public ImageButton btnPlus;
         public ImageButton btnMinus;
+        public String strItemName;
 
         public ViewHolder(View v) {
             super(v);
@@ -60,7 +60,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void remove(DataModel item) {
         int position = mDataset.indexOf(item);
         int q = Integer.parseInt(item.getQuantity());
-        if(q>=1){
+        if(q>1){
             mDataset.get(position).setQuantity(String.valueOf(q));
         } else{
             mDataset.remove(position);
@@ -80,7 +80,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.buy_leg_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
+
         ViewHolder vh = new ViewHolder(v);
+
         return vh;
     }
 
@@ -96,9 +98,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utilities.removeFromMyItems(mDataset.get(position).getItemName());
+                DataManipulationUtilities.deleteFromMyItems(mDataset.get(position).getItemName(), position, false);
             }
         });
+        holder.strItemName = itemName;
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)

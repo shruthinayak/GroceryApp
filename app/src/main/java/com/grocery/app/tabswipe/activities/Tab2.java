@@ -5,13 +5,13 @@ package com.grocery.app.tabswipe.activities;
  */
 
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -28,11 +28,9 @@ import android.widget.Toast;
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.adapters.PostAdapter;
 import com.grocery.app.tabswipe.models.DataModel;
-import com.grocery.app.tabswipe.utilities.Utilities;
+import com.grocery.app.tabswipe.utilities.DataManipulationUtilities;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by hp1 on 21-01-2015.
@@ -61,10 +59,24 @@ public class Tab2 extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        Utilities.mPostAdapter = new PostAdapter(Utilities.getMyItems());
-        mRecyclerView.setAdapter(Utilities.mPostAdapter);
+        DataManipulationUtilities.mPostAdapter = new PostAdapter(DataManipulationUtilities.getMyItems());
+        mRecyclerView.setAdapter(DataManipulationUtilities.mPostAdapter);
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
 
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                TextView t = (TextView) viewHolder.itemView.findViewById(R.id.txtItemName);
+                DataManipulationUtilities.deleteFromMyItems(t.getText().toString(), viewHolder.getOldPosition(), true);
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
         //function to add items
         Button btnAdd = (Button) v.findViewById(R.id.btn_add);
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -80,18 +92,18 @@ public class Tab2 extends Fragment {
                 edtItemDesc.addTextChangedListener(mDateEntryWatcher);
                 edtItemQty.addTextChangedListener(mDateEntryWatcher);
                 ArrayList<String> names = new ArrayList<String>();
-                for(String d : Utilities.myDataset.keySet()){
+                for (String d : DataManipulationUtilities.myDataset.keySet()) {
                     names.add(d);
                 }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_list_item_1,names);
+                        android.R.layout.simple_list_item_1, names);
                 edtItemName.setAdapter(adapter);
                 edtItemName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                        String selection = (String)adapterView.getItemAtPosition(position);
-                        DataModel d = Utilities.myDataset.get(selection);
+                        String selection = (String) adapterView.getItemAtPosition(position);
+                        DataModel d = DataManipulationUtilities.myDataset.get(selection);
                         edtItemDesc.setText(d.getDescription());
                         edtItemDesc.setEnabled(false);
                     }
@@ -109,7 +121,7 @@ public class Tab2 extends Fragment {
                         String itemQty = edtItemQty.getText().toString();
                         if (!itemName.isEmpty() && !itemDesc.isEmpty() && !itemQty.isEmpty()) {
                             DataModel add_data = new DataModel(itemName, itemDesc, itemQty);
-                            Utilities.addToMyItems(itemName, add_data);
+                            DataManipulationUtilities.addToMyItems(itemName, add_data);
                             Toast.makeText(getActivity(), "Added Successfully", Toast.LENGTH_SHORT).show();
                         }
                     }

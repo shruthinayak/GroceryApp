@@ -5,6 +5,8 @@ package com.grocery.app.tabswipe.adapters;
  */
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +15,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.grocery.app.tabswipe.R;
+import com.grocery.app.tabswipe.activities.BuyListDetailViewActivity;
 import com.grocery.app.tabswipe.models.DataModel;
-import com.grocery.app.tabswipe.utilities.Utilities;
+import com.grocery.app.tabswipe.utilities.DataManipulationUtilities;
 
-public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
+public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  implements View.OnClickListener {
     private ArrayList<DataModel> mDataset;
+    private Context ctx;
+    private String itemId;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         // each data item is just a string in this case
         public TextView itemName;
         public TextView description;
@@ -40,6 +45,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
             btnMinus.setVisibility(View.GONE);
             btnPlus.setVisibility(View.VISIBLE);
         }
+
     }
 
     public void add(DataModel item) {
@@ -65,8 +71,9 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public BuyAdapter(ArrayList<DataModel> myDataset) {
+    public BuyAdapter(Context context, ArrayList<DataModel> myDataset) {
         mDataset = myDataset;
+        ctx = context;
     }
 
     // Create new views (invoked by the layout manager)
@@ -83,8 +90,11 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final String itemName = mDataset.get(position).getItemName();
+        itemId = mDataset.get(position).getItem_id();
         holder.itemName.setText(itemName);
         holder.description.setText(mDataset.get(position).getDescription());
+        holder.itemName.setOnClickListener(this);
+        holder.description.setOnClickListener(this);
         holder.txtQuantity.setText(mDataset.get(position).getQuantity());
         holder.btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +102,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
                 int quantity = Integer.parseInt(holder.txtQuantity.getText().toString());
                 holder.txtQuantity.setText(String.valueOf(quantity+1));
                 mDataset.get(position).setQuantity(String.valueOf(quantity + 1));
-                Utilities.addToMyItems(itemName, mDataset.get(position));
+                DataManipulationUtilities.addToMyItems(itemName, mDataset.get(position));
             }
         });
 
@@ -102,5 +112,17 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder> {
     public int getItemCount() {
         return mDataset.size();
     }
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch(id){
+            case R.id.txtDescription:
+            case R.id.txtItemName:
+                Intent intent = new Intent(ctx, BuyListDetailViewActivity.class);
+                //Send item ID of the item pressed in bundle.
+                ctx.startActivity(intent);
+                break;
 
+        }
+    }
 }

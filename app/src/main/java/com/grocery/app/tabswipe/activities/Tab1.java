@@ -1,5 +1,6 @@
 package com.grocery.app.tabswipe.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,10 +13,11 @@ import android.view.ViewGroup;
 
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.adapters.BuyAdapter;
-import com.grocery.app.tabswipe.communicate.JsonService;
 import com.grocery.app.tabswipe.communicate.RetrofitSettings;
+import com.grocery.app.tabswipe.communicate.services.JsonService;
 import com.grocery.app.tabswipe.models.DataModel;
-import com.grocery.app.tabswipe.utilities.Utilities;
+import com.grocery.app.tabswipe.utilities.Constants;
+import com.grocery.app.tabswipe.utilities.DataManipulationUtilities;
 
 import java.util.List;
 
@@ -23,39 +25,38 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class Tab1 extends Fragment {
+public class Tab1 extends Fragment  {
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private static SwipeRefreshLayout mSwipeRefreshLayout;
+    private FragmentActivity f;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.tab_1, container, false);
-        FragmentActivity f = getActivity();
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerBuyView);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.activity_main_swipe_refresh_layout);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        f = getActivity();
 
-        // use a linear layout manager
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerBuyView);
+        mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(f);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        DataManipulationUtilities.mBuyAdapter = new BuyAdapter(f, DataManipulationUtilities.getDataSet());
+        mRecyclerView.setAdapter(DataManipulationUtilities.mBuyAdapter);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.activity_main_swipe_refresh_layout);
         final BuyListLoader loader = new BuyListLoader();
         // specify an adapter (see also next example)
-        Utilities.mBuyAdapter = new BuyAdapter(Utilities.getDataSet());
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 loader.load(getApp());
             }
         });
 
-        mRecyclerView.setAdapter(Utilities.mBuyAdapter);
 
         return v;
     }
+
     public static class BuyListLoader {
 
         public void load(RetrofitSettings app) {
@@ -64,8 +65,8 @@ public class Tab1 extends Fragment {
             jsonService.getSomeContent(new Callback<List<DataModel>>() {
                 @Override
                 public void success(List<DataModel> dataModel, Response response) {
-                    for(DataModel d: dataModel) {
-                        Utilities.mBuyAdapter.add(d);
+                    for (DataModel d : dataModel) {
+                        DataManipulationUtilities.mBuyAdapter.add(d);
                     }
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
@@ -77,7 +78,8 @@ public class Tab1 extends Fragment {
             });
         }
     }
+
     private RetrofitSettings getApp() {
-        return new RetrofitSettings();
+        return new RetrofitSettings(Constants.KEY_JSON_SERVER_ID);
     }
 }
