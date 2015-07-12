@@ -61,10 +61,8 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
 
     public void remove(DataModel item) {
         int position = mDataset.indexOf(item);
-        int q = Integer.parseInt(item.getQuantity());
-        if(q>=2){
-            mDataset.get(position).setQuantity(String.valueOf(q));
-        } else{
+        int q = Integer.parseInt(mDataset.get(position).getQuantity());
+        if(q<1){
             mDataset.remove(position);
         }
         notifyDataSetChanged();

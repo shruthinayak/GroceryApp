@@ -52,27 +52,37 @@ public class DataManipulationUtilities {
         return new ArrayList<>(myItems.values());
     }
 
+    public static void addToMyDataSet(String itemName, DataModel d){
+        if (myDataset.containsKey(itemName)) {
+            int q = Integer.parseInt(myDataset.get(itemName).getQuantity()) + 1;
+            myDataset.get(itemName).setQuantity(String.valueOf(q));
+            mBuyAdapter.add(myDataset.get(itemName));
+            addToMyItems(itemName,d);
+
+        } else {
+            DataModel data = new DataModel(itemName, d.getDescription(), "1");
+            myDataset.put(itemName,data );
+            mBuyAdapter.add(data);
+            addToMyItems(itemName, data);
+            mBuyAdapter.notifyItemInserted(mBuyAdapter.getItemCount());
+        }
+    }
+
     public static void addToMyItems(String itemName, DataModel d) {
         if (myItems.containsKey(itemName)) {
             int q = Integer.parseInt(myItems.get(itemName).getQuantity()) + 1;
             myItems.get(itemName).setQuantity(String.valueOf(q));
             mPostAdapter.add(myItems.get(itemName));
+
         } else {
-            myItems.put(itemName, new DataModel(itemName, d.getDescription(), "1"));
-            mPostAdapter.add(new DataModel(itemName, d.getDescription(), "1"));
+            DataModel data = new DataModel(itemName, d.getDescription(), "1");
+            myItems.put(itemName, data);
+            mPostAdapter.add(data);
+            mPostAdapter.notifyItemInserted(mPostAdapter.getItemCount());
+
         }
     }
 
-    public static void removeFromMyItems(String itemName) {
-        int q = Integer.parseInt(myItems.get(itemName).getQuantity()) - 1;
-        if (q == 0) {
-            myItems.remove(itemName);
-        } else {
-            myItems.get(itemName).setQuantity(String.valueOf(q));
-        }
-        mBuyAdapter.remove(myItems.get(itemName));
-        mPostAdapter.remove(myItems.get(itemName));
-    }
 
     public static void deleteFromMyItems(String itemName, int pos, boolean deleteFlag) {
         int q = Integer.parseInt(myItems.get(itemName).getQuantity());
@@ -82,12 +92,13 @@ public class DataManipulationUtilities {
             myDataset.get(itemName).setQuantity(String.valueOf(f - q));
             myItems.get(itemName).setQuantity("0");
             mPostAdapter.remove(myItems.get(itemName));
-            mPostAdapter.notifyItemRemoved(pos);
+            mBuyAdapter.remove(myItems.get(itemName));
             myItems.remove(itemName);
         } else {
             myDataset.get(itemName).setQuantity(String.valueOf(f - 1));
             myItems.get(itemName).setQuantity(String.valueOf(q - 1));
-            mPostAdapter.notifyDataSetChanged();
+            mPostAdapter.remove(myItems.get(itemName));
+            mBuyAdapter.remove(myItems.get(itemName));
         }
         mBuyAdapter.notifyDataSetChanged();
     }
