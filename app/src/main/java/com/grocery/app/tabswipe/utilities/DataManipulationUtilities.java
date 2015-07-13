@@ -41,15 +41,6 @@ public class DataManipulationUtilities {
 
 
     public static void initializeBuyerItems(Context ctx) {
-        /*requestors.add(new Requestor("Shruthi Nayak", "usr100", "rn.shruthi@gmail.com", "1", false, true));
-        requestors.add(new Requestor("Jithendra", "usr101", "jithendra.jayaram@gmail.com", "1", false, true));
-        buyerDetails.put("Haldirams", new RequestorDetails("100", "itm001", "2", requestors));*/
-       /* for(String jsonName: myDataset.keySet()){
-            String json = getStringJson(jsonName+".json");
-
-            RequestorDetails rd = gson.fromJson(json, RequestorDetails.class);
-            buyerDetails.put(rd.getItm_name(), rd);
-        }*/
         R.raw r = new R.raw();
         Field[] fields = R.raw.class.getFields();
         for(Field f: fields){
@@ -169,10 +160,6 @@ public class DataManipulationUtilities {
         else return true;
     }
 
-    public static boolean submitMyItemsToServer() {
-        Post post = new Post("usr100", new ArrayList<>(myItems.values()));
-        String json = gson.toJson(post, Post.class);
-        return false;
-    }
+
 }
 

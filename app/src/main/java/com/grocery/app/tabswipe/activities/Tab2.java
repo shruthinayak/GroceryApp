@@ -29,6 +29,7 @@ import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.adapters.PostAdapter;
 import com.grocery.app.tabswipe.models.DataModel;
 import com.grocery.app.tabswipe.utilities.DataManipulationUtilities;
+import com.grocery.app.tabswipe.utilities.ServerCalls;
 
 import java.util.ArrayList;
 
@@ -151,9 +152,7 @@ public class Tab2 extends Fragment {
                 theDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                            DataManipulationUtilities.submitMyItemsToServer();
-                            Toast.makeText(getActivity(), "Submitted Successfully", Toast.LENGTH_SHORT).show();
-
+                            ServerCalls.submitMyItemsToServer();
                     }
                 });
                 theDialogue.setNegativeButton("Review", new DialogInterface.OnClickListener() {
