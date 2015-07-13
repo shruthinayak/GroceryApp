@@ -9,7 +9,7 @@
       "qty": "1",
       "esplit": "rn.shruthi@gmail.com",
       "bought": false,
-      "lock": false
+      "lock": true
     }
   ]
 }

@@ -64,4 +64,12 @@ public class RequestorDetails {
         }
         return true;
     }
+    public boolean areAllItemsBought() {
+        for (Requestor r : details) {
+            if (!r.isBought()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

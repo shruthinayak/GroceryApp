@@ -153,5 +153,10 @@ public class DataManipulationUtilities {
         return buyerDetails.get(itemName).areAllItemsLocked();
         else return false;
     }
+    public static boolean areAllItemsBought(String itemName) {
+        if(buyerDetails.containsKey(itemName))
+            return buyerDetails.get(itemName).areAllItemsBought();
+        else return true;
+    }
 }
 

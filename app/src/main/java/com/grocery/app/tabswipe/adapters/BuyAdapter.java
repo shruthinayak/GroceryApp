@@ -36,6 +36,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
         public ImageButton btnPlus;
         public ImageButton btnMinus;
         public RelativeLayout lytOuterBuyLeg;
+        public View indicateLockBoughtView;
 
         public ViewHolder(View v) {
             super(v);
@@ -45,6 +46,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
             btnPlus = (ImageButton) v.findViewById(R.id.btnPlus);
             btnMinus = (ImageButton) v.findViewById(R.id.btnMinus);
             lytOuterBuyLeg = (RelativeLayout) v.findViewById(R.id.lytOuterBuyLeg);
+            indicateLockBoughtView =  v.findViewById(R.id.indicator);
             btnMinus.setVisibility(View.GONE);
             btnPlus.setVisibility(View.VISIBLE);
         }
@@ -104,17 +106,20 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
             @Override
             public void onClick(View view) {
                 int quantity = Integer.parseInt(holder.txtQuantity.getText().toString());
-                holder.txtQuantity.setText(String.valueOf(quantity+1));
+                holder.txtQuantity.setText(String.valueOf(quantity + 1));
                 mDataset.get(position).setQuantity(String.valueOf(quantity + 1));
                 DataManipulationUtilities.addToMyItems(itemName, mDataset.get(position));
             }
         });
-         if(itemName.equals("Haldirams") && DataManipulationUtilities.areAllItemsLocked("Haldirams")){
-                holder.lytOuterBuyLeg.setBackgroundColor(ctx.getResources().getColor(R.color.ColorLockRed));
-
-                //holder.lytOuterBuyLeg.setBackgroundColor(Color.TRANSPARENT);
+        holder.indicateLockBoughtView.setVisibility(View.GONE);
+         if(DataManipulationUtilities.areAllItemsLocked(itemName)){
+                holder.indicateLockBoughtView.setBackgroundColor(ctx.getResources().getColor(R.color.ColorLockRed));
+                holder.indicateLockBoughtView.setVisibility(View.VISIBLE);
         }
-
+        if(DataManipulationUtilities.areAllItemsBought(itemName)){
+            holder.indicateLockBoughtView.setBackgroundColor(ctx.getResources().getColor(R.color.ColorLockGreen));
+            holder.indicateLockBoughtView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
