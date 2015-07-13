@@ -1,0 +1,22 @@
+{
+  "uid": "usr100",
+  "items": [ {
+    "itm_id":"itm100",
+    "itm_name": "Kawan's chapathi",
+    "itm_desc": "healthy :P",
+    "itm_qty": "4"
+  },
+    {
+      "itm_id":"itm101",
+      "itm_name": "Maggi",
+      "itm_desc": "RIP",
+      "itm_qty": "2"
+    },
+    {
+      "itm_id":"itm102",
+      "itm_name": "Coconut",
+      "itm_desc": "not natural",
+      "itm_qty": "1"
+    }
+  ]
+}

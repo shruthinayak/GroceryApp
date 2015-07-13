@@ -37,6 +37,7 @@
         android:layout_alignParentRight="true"
         android:gravity="center"
         android:layout_alignParentTop="true">
+
 <Switch
     android:id="@+id/switchLock"
     android:layout_gravity="center"

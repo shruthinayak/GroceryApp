@@ -104,7 +104,7 @@ public class Tab2 extends Fragment {
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                         String selection = (String) adapterView.getItemAtPosition(position);
                         DataModel d = DataManipulationUtilities.myDataset.get(selection);
-                        edtItemDesc.setText(d.getDescription());
+                        edtItemDesc.setText(d.getItm_desc());
                         edtItemDesc.setEnabled(false);
                     }
                 });

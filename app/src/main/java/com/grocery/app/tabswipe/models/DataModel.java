@@ -1,11 +1,11 @@
 package com.grocery.app.tabswipe.models;
 
-public class DataModel {
-    /*String itm_id;
-    String itm_name;
-    String itm_desc;
-    String itm_qty;*/
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
+public class DataModel {
     private String itm_id;
     private String itm_name;
     private String itm_qty;
@@ -82,6 +82,9 @@ public class DataModel {
             }
         }
         return false;
+    }
+    public static Type getListType(){
+        return new TypeToken<List<DataModel>>(){}.getType();
     }
 
 }

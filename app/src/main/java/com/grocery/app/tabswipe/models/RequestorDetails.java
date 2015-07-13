@@ -15,6 +15,31 @@ public class RequestorDetails {
     }
 
     String itm_id;
+
+    public String getItm_name() {
+        return itm_name;
+    }
+
+    public void setItm_name(String itm_name) {
+        this.itm_name = itm_name;
+    }
+
+    public String getTotalQty() {
+        return totalQty;
+    }
+
+    public void setTotalQty(String totalQty) {
+        this.totalQty = totalQty;
+    }
+
+    public List<Requestor> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<Requestor> details) {
+        this.details = details;
+    }
+
     String itm_name;
     String totalQty;
     List<Requestor> details;
@@ -27,13 +52,13 @@ public class RequestorDetails {
     }
 
 
-    public List<Requestor> getBuyers(){
-    return details;
+    public List<Requestor> getBuyers() {
+        return details;
     }
 
-    public boolean areAllItemsLocked(){
-        for(Requestor r: details){
-            if(!r.isLock()){
+    public boolean areAllItemsLocked() {
+        for (Requestor r : details) {
+            if (!r.isLock()) {
                 return false;
             }
         }

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.grocery.app.tabswipe.R;
@@ -34,6 +35,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
         public TextView txtQuantity;
         public ImageButton btnPlus;
         public ImageButton btnMinus;
+        public RelativeLayout lytOuterBuyLeg;
 
         public ViewHolder(View v) {
             super(v);
@@ -42,6 +44,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
             txtQuantity = (TextView) v.findViewById(R.id.txtQuantity);
             btnPlus = (ImageButton) v.findViewById(R.id.btnPlus);
             btnMinus = (ImageButton) v.findViewById(R.id.btnMinus);
+            lytOuterBuyLeg = (RelativeLayout) v.findViewById(R.id.lytOuterBuyLeg);
             btnMinus.setVisibility(View.GONE);
             btnPlus.setVisibility(View.VISIBLE);
         }
@@ -89,10 +92,11 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final String itemName = mDataset.get(position).getItemName();
-        itemId = mDataset.get(position).getItem_id();
+       final String itemName = mDataset.get(position).getItemName();
+       // final String itemName = "Haldirams";
+        itemId = mDataset.get(position).getItm_id();
         holder.itemName.setText(itemName);
-        holder.description.setText(mDataset.get(position).getDescription());
+        holder.description.setText(mDataset.get(position).getItm_desc());
         holder.itemName.setOnClickListener(this);
         holder.description.setOnClickListener(this);
         holder.txtQuantity.setText(mDataset.get(position).getQuantity());
@@ -105,6 +109,11 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
                 DataManipulationUtilities.addToMyItems(itemName, mDataset.get(position));
             }
         });
+         if(itemName.equals("Haldirams") && DataManipulationUtilities.areAllItemsLocked("Haldirams")){
+                holder.lytOuterBuyLeg.setBackgroundColor(ctx.getResources().getColor(R.color.ColorLockRed));
+
+                //holder.lytOuterBuyLeg.setBackgroundColor(Color.TRANSPARENT);
+        }
 
     }
 
@@ -117,9 +126,12 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
         int id = view.getId();
         switch(id){
             case R.id.txtDescription:
+                break;
             case R.id.txtItemName:
+                TextView t = (TextView) view;
                 Intent intent = new Intent(ctx, BuyListDetailViewActivity.class);
                 //Send item ID of the item pressed in bundle.
+                intent.putExtra("itemName", t.getText().toString());
                 ctx.startActivity(intent);
                 break;
 
