@@ -72,4 +72,14 @@ public class RequestorDetails {
         }
         return true;
     }
+    public void setAllItemsLocked() {
+        for (Requestor r : details) {
+            r.setLock(true);
+        }
+    }
+    public void setAllItemsBought() {
+        for (Requestor r : details) {
+            r.setBought(true);
+        }
+    }
 }

@@ -8,6 +8,7 @@ import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.adapters.BuyAdapter;
 import com.grocery.app.tabswipe.adapters.BuyDetailViewAdapter;
 import com.grocery.app.tabswipe.adapters.PostAdapter;
+import com.grocery.app.tabswipe.models.Post;
 import com.grocery.app.tabswipe.models.RequestorDetails;
 import com.grocery.app.tabswipe.models.DataModel;
 import com.grocery.app.tabswipe.models.Requestor;
@@ -157,6 +158,21 @@ public class DataManipulationUtilities {
         if(buyerDetails.containsKey(itemName))
             return buyerDetails.get(itemName).areAllItemsBought();
         else return true;
+    }
+    public static void setAllItemsLocked(String itemName) {
+        if(buyerDetails.containsKey(itemName))
+            buyerDetails.get(itemName).areAllItemsLocked();
+    }
+    public static boolean setAllItemsBought(String itemName) {
+        if(buyerDetails.containsKey(itemName))
+            return buyerDetails.get(itemName).areAllItemsBought();
+        else return true;
+    }
+
+    public static boolean submitMyItemsToServer() {
+        Post post = new Post("usr100", new ArrayList<>(myItems.values()));
+        String json = gson.toJson(post, Post.class);
+        return false;
     }
 }
 

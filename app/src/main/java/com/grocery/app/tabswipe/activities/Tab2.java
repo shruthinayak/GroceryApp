@@ -151,7 +151,7 @@ public class Tab2 extends Fragment {
                 theDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                            DataManipulationUtilities.submitMyItemsToServer();
                             Toast.makeText(getActivity(), "Submitted Successfully", Toast.LENGTH_SHORT).show();
 
                     }
