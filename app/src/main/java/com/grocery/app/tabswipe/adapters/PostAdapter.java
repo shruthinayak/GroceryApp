@@ -47,22 +47,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public void add(DataModel item) {
-        if (mDataset.contains(item)) {
-            int position = mDataset.indexOf(item);
-            mDataset.get(position).setQuantity(item.getQuantity());
-            notifyDataSetChanged();
-        } else {
-            mDataset.add(mDataset.size(), item);
-            notifyItemInserted(mDataset.size());
-        }
+        mDataset.add(mDataset.size(), item);
+        notifyItemInserted(mDataset.size());
     }
 
     public void remove(DataModel item) {
         int position = mDataset.indexOf(item);
         int q = Integer.parseInt(item.getQuantity());
-        if(q>=1){
-            mDataset.get(position).setQuantity(String.valueOf(q));
-        } else{
+        if(q < 1){
             mDataset.remove(position);
         }
         notifyDataSetChanged();

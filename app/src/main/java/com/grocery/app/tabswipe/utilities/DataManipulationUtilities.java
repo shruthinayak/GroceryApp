@@ -56,8 +56,9 @@ public class DataManipulationUtilities {
         if (myDataset.containsKey(itemName)) {
             int q = Integer.parseInt(myDataset.get(itemName).getQuantity()) + 1;
             myDataset.get(itemName).setQuantity(String.valueOf(q));
-            mBuyAdapter.add(myDataset.get(itemName));
-            addToMyItems(itemName,d);
+            //mBuyAdapter.add(myDataset.get(itemName));
+            mBuyAdapter.notifyDataSetChanged();
+            addToMyItems(itemName, d);
 
         } else {
             DataModel data = new DataModel(itemName, d.getDescription(), "1");
@@ -72,7 +73,8 @@ public class DataManipulationUtilities {
         if (myItems.containsKey(itemName)) {
             int q = Integer.parseInt(myItems.get(itemName).getQuantity()) + 1;
             myItems.get(itemName).setQuantity(String.valueOf(q));
-            mPostAdapter.add(myItems.get(itemName));
+            //mPostAdapter.add(myItems.get(itemName));
+            mPostAdapter.notifyDataSetChanged();
 
         } else {
             DataModel data = new DataModel(itemName, d.getDescription(), "1");
@@ -99,6 +101,9 @@ public class DataManipulationUtilities {
             myItems.get(itemName).setQuantity(String.valueOf(q - 1));
             mPostAdapter.remove(myItems.get(itemName));
             mBuyAdapter.remove(myItems.get(itemName));
+            if(Integer.parseInt(myItems.get(itemName).getQuantity()) < 1){
+                myItems.remove(itemName);
+            }
         }
         mBuyAdapter.notifyDataSetChanged();
     }
@@ -107,4 +112,3 @@ public class DataManipulationUtilities {
         return buyerDetails.get(itemId);
     }
 }
-
