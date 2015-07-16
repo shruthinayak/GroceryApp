@@ -54,14 +54,14 @@ public class DataManipulationUtilities {
 
     public static void addToMyDataSet(String itemName, DataModel d){
         if (myDataset.containsKey(itemName)) {
-            int q = Integer.parseInt(myDataset.get(itemName).getQuantity()) + 1;
+            int q = Integer.parseInt(myDataset.get(itemName).getQuantity()) + Integer.parseInt(d.getQuantity());
             myDataset.get(itemName).setQuantity(String.valueOf(q));
             //mBuyAdapter.add(myDataset.get(itemName));
             mBuyAdapter.notifyDataSetChanged();
             addToMyItems(itemName, d);
 
         } else {
-            DataModel data = new DataModel(itemName, d.getDescription(), "1");
+            DataModel data = new DataModel(itemName, d.getDescription(), d.getQuantity());
             myDataset.put(itemName,data );
             mBuyAdapter.add(data);
             addToMyItems(itemName, data);
@@ -71,13 +71,13 @@ public class DataManipulationUtilities {
 
     public static void addToMyItems(String itemName, DataModel d) {
         if (myItems.containsKey(itemName)) {
-            int q = Integer.parseInt(myItems.get(itemName).getQuantity()) + 1;
+            int q = Integer.parseInt(myItems.get(itemName).getQuantity()) + Integer.parseInt(d.getQuantity());
             myItems.get(itemName).setQuantity(String.valueOf(q));
             //mPostAdapter.add(myItems.get(itemName));
             mPostAdapter.notifyDataSetChanged();
 
         } else {
-            DataModel data = new DataModel(itemName, d.getDescription(), "1");
+            DataModel data = new DataModel(itemName, d.getDescription(),d.getQuantity());
             myItems.put(itemName, data);
             mPostAdapter.add(data);
             mPostAdapter.notifyItemInserted(mPostAdapter.getItemCount());

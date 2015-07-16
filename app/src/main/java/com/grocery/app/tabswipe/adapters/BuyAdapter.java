@@ -94,7 +94,8 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
                 int quantity = Integer.parseInt(holder.txtQuantity.getText().toString());
                 holder.txtQuantity.setText(String.valueOf(quantity+1));
                 mDataset.get(position).setQuantity(String.valueOf(quantity + 1));
-                DataManipulationUtilities.addToMyItems(itemName, mDataset.get(position));
+                DataModel d = new DataModel(itemName,mDataset.get(position).getDescription(),"1");
+                DataManipulationUtilities.addToMyItems(itemName, d);
             }
         });
 
