@@ -60,7 +60,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void remove(DataModel item) {
         int position = mDataset.indexOf(item);
         int q = Integer.parseInt(item.getQuantity());
-        if(q>1){
+        if(q>=1){
             mDataset.get(position).setQuantity(String.valueOf(q));
         } else{
             mDataset.remove(position);

@@ -122,7 +122,7 @@ public class Tab2 extends Fragment {
                         String itemQty = edtItemQty.getText().toString();
                         if (!itemName.isEmpty() && !itemDesc.isEmpty() && !itemQty.isEmpty()) {
                             DataModel add_data = new DataModel(itemName, itemDesc, itemQty);
-                            DataManipulationUtilities.addToMyItems(itemName, add_data);
+                            DataManipulationUtilities.addToMyDataSet(itemName, add_data);
                             Toast.makeText(getActivity(), "Added Successfully", Toast.LENGTH_SHORT).show();
                         }
                     }
