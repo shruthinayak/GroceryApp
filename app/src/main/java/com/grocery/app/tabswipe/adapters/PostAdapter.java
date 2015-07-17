@@ -85,7 +85,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         // - replace the contents of the view with that element
         final String itemName = mDataset.get(position).getItemName();
         holder.itemName.setText(itemName);
-        holder.description.setText(mDataset.get(position).getDescription());
+        holder.description.setText(mDataset.get(position).getItm_desc());
         holder.txtQuantity.setText(mDataset.get(position).getQuantity());
         holder.btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override

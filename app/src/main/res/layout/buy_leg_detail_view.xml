@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/txtDescription"
         android:layout_width="fill_parent"
-        android:layout_height="26dip"
+        android:layout_height="0dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:ellipsize="end"
@@ -37,6 +37,7 @@
         android:layout_alignParentRight="true"
         android:gravity="center"
         android:layout_alignParentTop="true">
+
 <Switch
     android:id="@+id/switchLock"
     android:layout_gravity="center"
