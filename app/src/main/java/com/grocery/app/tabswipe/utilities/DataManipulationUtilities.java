@@ -6,6 +6,9 @@ import com.grocery.app.tabswipe.adapters.PostAdapter;
 import com.grocery.app.tabswipe.models.RequestorDetails;
 import com.grocery.app.tabswipe.models.DataModel;
 import com.grocery.app.tabswipe.models.Requestor;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,18 +31,29 @@ public class DataManipulationUtilities {
     }
 
     public static void initializeData() {
-
         myDataset.clear();
-        myDataset.put("Kawan's Chapathi", new DataModel("Kawan's Chapathi", "nice, healthy, frozen", "1"));
-        myDataset.put("Shredded coconut", new DataModel("Shredded coconut", "nice, healthy, frozen", "1"));
-        myDataset.put("Rice bag 20lb Grain market", new DataModel("Rice bag 20lb Grain market", "healthy", "1"));
-        myDataset.put("Parle-G", new DataModel("Parle-G", "G maane genius", "1"));
-        myDataset.put("Dal", new DataModel("Dal", "Yellow Dal", "1"));
-        myDataset.put("Maggi", new DataModel("Maggi", "RIP", "1"));
-        myDataset.put("Saabudhana", new DataModel("Saabudhana", "Best for vada", "1"));
-        myDataset.put("Maiyas", new DataModel("Maiyas", "Rare find in US", "1"));
-        myDataset.put("Haldirams", new DataModel("Haldirams", "Was better in India", "1"));
-        myDataset.put("MTR", new DataModel("MTR", "The hated brand", "1"));
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("DataModel");
+        try {
+            ArrayList<ParseObject>  list = (ArrayList<ParseObject>) query.find();
+            for (ParseObject po: list) {
+                DataModel dm = new DataModel(po.getString("item_name"), po.getString("item_desc"),
+                        po.getString("quantity"));
+                myDataset.put(dm.getItem_name(), dm);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+
+            myDataset.put("Kawan's Chapathi", new DataModel("Kawan's Chapathi", "nice, healthy, frozen", "1"));
+            myDataset.put("Shredded coconut", new DataModel("Shredded coconut", "nice, healthy, frozen", "1"));
+            myDataset.put("Rice bag 20lb Grain market", new DataModel("Rice bag 20lb Grain market", "healthy", "1"));
+            myDataset.put("Parle-G", new DataModel("Parle-G", "G maane genius", "1"));
+            myDataset.put("Dal", new DataModel("Dal", "Yellow Dal", "1"));
+            myDataset.put("Maggi", new DataModel("Maggi", "RIP", "1"));
+            myDataset.put("Saabudhana", new DataModel("Saabudhana", "Best for vada", "1"));
+            myDataset.put("Maiyas", new DataModel("Maiyas", "Rare find in US", "1"));
+            myDataset.put("Haldirams", new DataModel("Haldirams", "Was better in India", "1"));
+            myDataset.put("MTR", new DataModel("MTR", "The hated brand", "1"));
+        }
 
     }
 

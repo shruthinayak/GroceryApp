@@ -8,6 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Toolbar;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.slidetabs.SlidingTabLayout;
 import com.grocery.app.tabswipe.slidetabs.ViewPagerAdapter;
@@ -28,8 +31,14 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, getString(R.string.application_id),
+                getString(R.string.client_id));
+
         DataManipulationUtilities.initializeData();
         DataManipulationUtilities.initializeBuyerItems();
+
         setContentView(R.layout.activity_main);
 
         getActionBar().hide();
@@ -54,8 +63,6 @@ public class MainActivity extends ActionBarActivity {
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-
-
     }
 
 

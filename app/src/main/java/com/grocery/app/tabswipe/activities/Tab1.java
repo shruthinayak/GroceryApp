@@ -16,9 +16,12 @@ import com.grocery.app.tabswipe.adapters.BuyAdapter;
 import com.grocery.app.tabswipe.communicate.RetrofitSettings;
 import com.grocery.app.tabswipe.communicate.services.JsonService;
 import com.grocery.app.tabswipe.models.DataModel;
+import com.grocery.app.tabswipe.parse.ParseDAO;
+import com.grocery.app.tabswipe.parse.ParseDAOCallback;
 import com.grocery.app.tabswipe.utilities.Constants;
 import com.grocery.app.tabswipe.utilities.DataManipulationUtilities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -41,8 +44,15 @@ public class Tab1 extends Fragment  {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(f);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        DataManipulationUtilities.mBuyAdapter = new BuyAdapter(f, DataManipulationUtilities.getDataSet());
-        mRecyclerView.setAdapter(DataManipulationUtilities.mBuyAdapter);
+
+        ParseDAO pd = new ParseDAO();
+        pd.getBuyItems(new ParseDAOCallback<ArrayList<DataModel>>() {
+            @Override
+            public void onDataAvailable(ArrayList<DataModel> data) {
+                DataManipulationUtilities.mBuyAdapter = new BuyAdapter(f, data);
+                mRecyclerView.setAdapter(DataManipulationUtilities.mBuyAdapter);
+            }
+        });
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.activity_main_swipe_refresh_layout);
         final BuyListLoader loader = new BuyListLoader();
         // specify an adapter (see also next example)
