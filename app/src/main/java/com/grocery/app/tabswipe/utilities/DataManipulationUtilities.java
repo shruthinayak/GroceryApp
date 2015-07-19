@@ -1,8 +1,14 @@
 package com.grocery.app.tabswipe.utilities;
 
+import android.content.Context;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.adapters.BuyAdapter;
 import com.grocery.app.tabswipe.adapters.BuyDetailViewAdapter;
 import com.grocery.app.tabswipe.adapters.PostAdapter;
+import com.grocery.app.tabswipe.models.Post;
 import com.grocery.app.tabswipe.models.RequestorDetails;
 import com.grocery.app.tabswipe.models.DataModel;
 import com.grocery.app.tabswipe.models.Requestor;
@@ -10,6 +16,17 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import org.parceler.apache.commons.lang.StringUtils;
+import org.parceler.guava.io.Files;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,44 +34,58 @@ import java.util.List;
 public class DataManipulationUtilities {
     public static HashMap<String, DataModel> myDataset = new HashMap<String, DataModel>();
     static HashMap<String, DataModel> myItems = new HashMap<String, DataModel>();
+    static HashMap<String, RequestorDetails> requestorDetails = new HashMap<>();
     public static PostAdapter mPostAdapter;
     public static BuyAdapter mBuyAdapter;
     public static BuyDetailViewAdapter mBuyerDetailsAdapter;
     //item-id, buyerslist
     public static HashMap<String, RequestorDetails> buyerDetails = new HashMap<>();
-    private static List<Requestor> requestors = new ArrayList<>();
+    private static Gson gson = new Gson();
 
-    public static void initializeBuyerItems() {
-        requestors.add(new Requestor("Shruthi Nayak", "usr100", "rn.shruthi@gmail.com", "1", false, false));
-        requestors.add(new Requestor("Jithendra", "usr101", "jithendra.jayaram@gmail.com", "1", false, false));
-        buyerDetails.put("100", new RequestorDetails("100", "2", requestors));
+
+    public static void initializeBuyerItems(Context ctx) {
+        R.raw r = new R.raw();
+        Field[] fields = R.raw.class.getFields();
+        for(Field f: fields){
+            if(!f.getName().contains("buy") && !f.getName().contains("post")){
+                f.setAccessible(true);
+                try {
+                    int id = (Integer) f.get(r);
+                    String json = getStringJson(ctx.getResources().openRawResource(id));
+                    RequestorDetails rd = gson.fromJson(json, RequestorDetails.class);
+                    buyerDetails.put(rd.getItm_name(), rd);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
     }
 
-    public static void initializeData() {
-        myDataset.clear();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("DataModel");
-        try {
-            ArrayList<ParseObject>  list = (ArrayList<ParseObject>) query.find();
-            for (ParseObject po: list) {
-                DataModel dm = new DataModel(po.getString("item_name"), po.getString("item_desc"),
-                        po.getString("quantity"));
-                myDataset.put(dm.getItem_name(), dm);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-
-            myDataset.put("Kawan's Chapathi", new DataModel("Kawan's Chapathi", "nice, healthy, frozen", "1"));
-            myDataset.put("Shredded coconut", new DataModel("Shredded coconut", "nice, healthy, frozen", "1"));
-            myDataset.put("Rice bag 20lb Grain market", new DataModel("Rice bag 20lb Grain market", "healthy", "1"));
-            myDataset.put("Parle-G", new DataModel("Parle-G", "G maane genius", "1"));
-            myDataset.put("Dal", new DataModel("Dal", "Yellow Dal", "1"));
-            myDataset.put("Maggi", new DataModel("Maggi", "RIP", "1"));
-            myDataset.put("Saabudhana", new DataModel("Saabudhana", "Best for vada", "1"));
-            myDataset.put("Maiyas", new DataModel("Maiyas", "Rare find in US", "1"));
-            myDataset.put("Haldirams", new DataModel("Haldirams", "Was better in India", "1"));
-            myDataset.put("MTR", new DataModel("MTR", "The hated brand", "1"));
+    public static void initializeData(Context ctx) {
+        String json = getStringJson(ctx.getResources().openRawResource(R.raw.buy));
+        List<DataModel> dm = gson.fromJson(json, DataModel.getListType());
+        for(DataModel d: dm){
+            myDataset.put(d.getItemName(), d);
         }
+    }
 
+    private static String getStringJson(InputStream io) {
+        BufferedReader bf = new BufferedReader(new InputStreamReader(io));
+        try {
+            StringBuilder out = new StringBuilder();
+            String line;
+            while ((line = bf.readLine()) != null) {
+                out.append(line);
+                out.append(" ");
+            }
+            bf.close();
+            return out.toString();   //Prints the string content read from input stream
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static ArrayList<DataModel> getDataSet() {
@@ -68,13 +99,13 @@ public class DataManipulationUtilities {
 
     public static void addToMyDataSet(String itemName, DataModel d){
         if (myDataset.containsKey(itemName)) {
-            int q = Integer.parseInt(myDataset.get(itemName).getQuantity()) + 1;
+            int q = Integer.parseInt(myDataset.get(itemName).getQuantity()) + Integer.parseInt(d.getQuantity());
             myDataset.get(itemName).setQuantity(String.valueOf(q));
-            mBuyAdapter.add(myDataset.get(itemName));
-            addToMyItems(itemName,d);
+            mBuyAdapter.notifyDataSetChanged();
+            addToMyItems(itemName, d);
 
         } else {
-            DataModel data = new DataModel(itemName, d.getDescription(), "1");
+            DataModel data = new DataModel(itemName, d.getItm_desc(), d.getQuantity());
             myDataset.put(itemName,data );
             mBuyAdapter.add(data);
             addToMyItems(itemName, data);
@@ -84,12 +115,12 @@ public class DataManipulationUtilities {
 
     public static void addToMyItems(String itemName, DataModel d) {
         if (myItems.containsKey(itemName)) {
-            int q = Integer.parseInt(myItems.get(itemName).getQuantity()) + 1;
+            int q = Integer.parseInt(myItems.get(itemName).getQuantity()) + Integer.parseInt(d.getQuantity());
             myItems.get(itemName).setQuantity(String.valueOf(q));
-            mPostAdapter.add(myItems.get(itemName));
+            mPostAdapter.notifyDataSetChanged();
 
         } else {
-            DataModel data = new DataModel(itemName, d.getDescription(), "1");
+            DataModel data = new DataModel(itemName, d.getItm_desc(),d.getQuantity());
             myItems.put(itemName, data);
             mPostAdapter.add(data);
             mPostAdapter.notifyItemInserted(mPostAdapter.getItemCount());
@@ -97,6 +128,16 @@ public class DataManipulationUtilities {
         }
     }
 
+    public static void removeFromMyItems(String itemName) {
+        int q = Integer.parseInt(myItems.get(itemName).getQuantity()) - 1;
+        if (q == 0) {
+            myItems.remove(itemName);
+        } else {
+            myItems.get(itemName).setQuantity(String.valueOf(q));
+        }
+        mBuyAdapter.remove(myItems.get(itemName));
+        mPostAdapter.remove(myItems.get(itemName));
+    }
 
     public static void deleteFromMyItems(String itemName, int pos, boolean deleteFlag) {
         int q = Integer.parseInt(myItems.get(itemName).getQuantity());
@@ -113,12 +154,39 @@ public class DataManipulationUtilities {
             myItems.get(itemName).setQuantity(String.valueOf(q - 1));
             mPostAdapter.remove(myItems.get(itemName));
             mBuyAdapter.remove(myItems.get(itemName));
+            if(Integer.parseInt(myItems.get(itemName).getQuantity()) < 1){
+                myItems.remove(itemName);
+            }
         }
         mBuyAdapter.notifyDataSetChanged();
     }
 
-    public static RequestorDetails getBuyerDetailsForItemId(String itemId) {
-        return buyerDetails.get(itemId);
+    public static RequestorDetails getBuyerDetailsForItemName(String itemName) {
+        if(buyerDetails.containsKey(itemName))
+        return buyerDetails.get(itemName);
+        else return null;
     }
+
+    public static boolean areAllItemsLocked(String itemName) {
+        if(buyerDetails.containsKey(itemName))
+        return buyerDetails.get(itemName).areAllItemsLocked();
+        else return false;
+    }
+    public static boolean areAllItemsBought(String itemName) {
+        if(buyerDetails.containsKey(itemName))
+            return buyerDetails.get(itemName).areAllItemsBought();
+        else return true;
+    }
+    public static void setAllItemsLocked(String itemName) {
+        if(buyerDetails.containsKey(itemName))
+            buyerDetails.get(itemName).areAllItemsLocked();
+    }
+    public static boolean setAllItemsBought(String itemName) {
+        if(buyerDetails.containsKey(itemName))
+            return buyerDetails.get(itemName).areAllItemsBought();
+        else return true;
+    }
+
+
 }
 

@@ -15,7 +15,6 @@ import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.slidetabs.SlidingTabLayout;
 import com.grocery.app.tabswipe.slidetabs.ViewPagerAdapter;
 import com.grocery.app.tabswipe.utilities.DataManipulationUtilities;
-//Initial commit 1
 
 public class MainActivity extends ActionBarActivity {
 
@@ -36,9 +35,8 @@ public class MainActivity extends ActionBarActivity {
         Parse.initialize(this, getString(R.string.application_id),
                 getString(R.string.client_id));
 
-        DataManipulationUtilities.initializeData();
-        DataManipulationUtilities.initializeBuyerItems();
-
+        DataManipulationUtilities.initializeData(MainActivity.this);
+        DataManipulationUtilities.initializeBuyerItems(MainActivity.this);
         setContentView(R.layout.activity_main);
 
         getActionBar().hide();
@@ -63,28 +61,5 @@ public class MainActivity extends ActionBarActivity {
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

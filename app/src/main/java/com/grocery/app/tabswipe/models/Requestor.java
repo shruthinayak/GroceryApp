@@ -1,5 +1,10 @@
 package com.grocery.app.tabswipe.models;
 
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
+
 /**
  * Created by SG0222540 on 7/10/2015.
  */
@@ -67,5 +72,9 @@ public class Requestor {
 
     public void setQty(String qty) {
         this.qty = qty;
+    }
+
+    public static Type getListType(){
+        return new TypeToken<List<DataModel>>(){}.getType();
     }
 }

@@ -9,7 +9,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat" >
+        android:theme="@style/CustomActionBarTheme" >
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
@@ -25,8 +25,7 @@
             android:label="@string/title_activity_splitwise_login" >
         </activity>
         <activity
-            android:name=".activities.BuyListDetailViewActivity"
-            android:label="@string/title_activity_buy_list_detail_view" >
+            android:name=".activities.BuyListDetailViewActivity" >
         </activity>
     </application>
 

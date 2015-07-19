@@ -1,0 +1,23 @@
+{
+  "itm_id": "itm100",
+  "itm_name":"Kawan's chapathi",
+  "totalQty": "4",
+  "details": [
+    {
+      "uname": "Shruthi",
+      "uid": "usr100",
+      "qty": "2",
+      "esplit": "rn.shruthi@gmail.com",
+      "bought": false,
+      "lock": false
+    },
+    {
+      "uname": "Jithendra",
+      "uid": "usr101",
+      "qty": "2",
+      "esplit": "jithendra.jayaram@gmail.com",
+      "bought": false,
+      "lock": false
+    }
+  ]
+}
