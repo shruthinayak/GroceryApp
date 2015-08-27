@@ -50,4 +50,19 @@ public class ParseDAO {
             }
         });
     }
+
+    public void getItemsPostedByMe(final ParseDAOCallback<ArrayList<DataModel>> callback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(DataModel.class.getSimpleName());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                ArrayList<DataModel> items = new ArrayList<DataModel>(list.size());
+                for (ParseObject po: list) {
+                    items.add(new DataModel(po.getString("item_name"), po.getString("item_desc"),
+                            po.getString("quantity")));
+                }
+                callback.onDataAvailable(items);
+            }
+        });
+    }
 }

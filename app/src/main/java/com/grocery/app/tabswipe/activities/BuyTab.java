@@ -1,9 +1,7 @@
 package com.grocery.app.tabswipe.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,60 +11,64 @@ import android.view.ViewGroup;
 
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.adapters.BuyAdapter;
-import com.grocery.app.tabswipe.communicate.RetrofitSettings;
-import com.grocery.app.tabswipe.communicate.services.JsonService;
 import com.grocery.app.tabswipe.models.DataModel;
 import com.grocery.app.tabswipe.parse.ParseDAO;
 import com.grocery.app.tabswipe.parse.ParseDAOCallback;
-import com.grocery.app.tabswipe.utilities.Constants;
-import com.grocery.app.tabswipe.utilities.DataManipulationUtilities;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-
-public class Tab1 extends Fragment  {
+public class BuyTab extends Fragment  {
 
     private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLayoutManager;
+    private BuyAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     private static SwipeRefreshLayout mSwipeRefreshLayout;
-    private FragmentActivity f;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.tab_1, container, false);
-        f = getActivity();
+        View v = inflater.inflate(R.layout.buy_tab, container, false);
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerBuyView);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(f);
+        mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new BuyAdapter(getActivity(), new ArrayList<DataModel>());
+        mRecyclerView.setAdapter(mAdapter);
 
         ParseDAO pd = new ParseDAO();
         pd.getBuyItems(new ParseDAOCallback<ArrayList<DataModel>>() {
             @Override
             public void onDataAvailable(ArrayList<DataModel> data) {
-                DataManipulationUtilities.mBuyAdapter = new BuyAdapter(f, data);
-                mRecyclerView.setAdapter(DataManipulationUtilities.mBuyAdapter);
+                loadData(data);
             }
         });
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.activity_main_swipe_refresh_layout);
-        final BuyListLoader loader = new BuyListLoader();
-        // specify an adapter (see also next example)
-         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loader.load(getApp());
-            }
-        });
-
-
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+             @Override
+             public void onRefresh() {
+                 refreshBuyList();
+             }
+         });
         return v;
     }
 
+    private void refreshBuyList() {
+        ParseDAO pd = new ParseDAO();
+        pd.getBuyItems(new ParseDAOCallback<ArrayList<DataModel>>() {
+            @Override
+            public void onDataAvailable(ArrayList<DataModel> data) {
+                loadData(data);
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    private void loadData(ArrayList<DataModel> data) {
+        mAdapter.clearItems();
+        mAdapter.addItems(data);
+    }
+    /*
     public static class BuyListLoader {
 
         public void load(RetrofitSettings app) {
@@ -92,4 +94,5 @@ public class Tab1 extends Fragment  {
     private RetrofitSettings getApp() {
         return new RetrofitSettings(Constants.KEY_JSON_SERVER_ID);
     }
+    */
 }

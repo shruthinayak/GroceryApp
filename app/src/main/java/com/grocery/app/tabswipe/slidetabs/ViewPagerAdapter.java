@@ -4,8 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.grocery.app.tabswipe.activities.Tab1;
-import com.grocery.app.tabswipe.activities.Tab2;
+import com.grocery.app.tabswipe.activities.BuyTab;
+import com.grocery.app.tabswipe.activities.PostTab;
+import com.grocery.app.tabswipe.activities.SettingsTab;
 
 /**
  * Created by Edwin on 15/02/2015.
@@ -31,15 +32,18 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         if(position == 0) // if the position is 0 we are returning the First tab
         {
-            Tab1 tab1 = new Tab1();
+            BuyTab tab1 = new BuyTab();
             return tab1;
         }
-        else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        else if (position == 1)           // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
-            Tab2 tab2 = new Tab2();
+            PostTab tab2 = new PostTab();
             return tab2;
         }
-
+        else {
+            SettingsTab tab3 = new SettingsTab();
+            return tab3;
+        }
     }
 
     // This method return the titles for the Tabs in the Tab Strip

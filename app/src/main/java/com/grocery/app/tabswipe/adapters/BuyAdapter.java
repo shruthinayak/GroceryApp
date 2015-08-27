@@ -53,6 +53,12 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
 
     }
 
+    public void addItems(ArrayList<DataModel> items) {
+        int currentPos = mDataset.size();
+        mDataset.addAll(items);
+        notifyItemRangeInserted(currentPos, items.size());
+    }
+
     public void add(DataModel item) {
         mDataset.add(mDataset.size(), item);
         notifyItemInserted(mDataset.size());
@@ -134,5 +140,11 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>  imp
                 break;
 
         }
+    }
+
+    public void clearItems() {
+        int oldPos = mDataset.size();
+        mDataset.clear();
+        notifyItemRangeRemoved(0, oldPos);
     }
 }

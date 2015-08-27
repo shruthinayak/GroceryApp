@@ -28,6 +28,8 @@ import android.widget.Toast;
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.adapters.PostAdapter;
 import com.grocery.app.tabswipe.models.DataModel;
+import com.grocery.app.tabswipe.parse.ParseDAO;
+import com.grocery.app.tabswipe.parse.ParseDAOCallback;
 import com.grocery.app.tabswipe.utilities.DataManipulationUtilities;
 import com.grocery.app.tabswipe.utilities.ServerCalls;
 
@@ -36,9 +38,10 @@ import java.util.ArrayList;
 /**
  * Created by hp1 on 21-01-2015.
  */
-public class Tab2 extends Fragment {
+public class PostTab extends Fragment {
     private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private PostAdapter mAdapter;
     private AlertDialog.Builder theDialogue;
     private AutoCompleteTextView edtItemName;
     private EditText edtItemDesc;
@@ -47,8 +50,7 @@ public class Tab2 extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.tab_2, container, false);
-        FragmentActivity f = getActivity();
+        View v = inflater.inflate(R.layout.post_tab, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerPostView);
 
         // use this setting to improve performance if you know that changes
@@ -56,12 +58,22 @@ public class Tab2 extends Fragment {
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(f);
+        mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        DataManipulationUtilities.mPostAdapter = new PostAdapter(DataManipulationUtilities.getMyItems());
-        mRecyclerView.setAdapter(DataManipulationUtilities.mPostAdapter);
+        //DataManipulationUtilities.mPostAdapter = new PostAdapter(DataManipulationUtilities.getMyItems());
+        //mRecyclerView.setAdapter(DataManipulationUtilities.mPostAdapter);
+        mAdapter = new PostAdapter(new ArrayList<DataModel>());
+        mRecyclerView.setAdapter(mAdapter);
+
+        ParseDAO pd = new ParseDAO();
+        pd.getItemsPostedByMe(new ParseDAOCallback<ArrayList<DataModel>>() {
+            @Override
+            public void onDataAvailable(ArrayList<DataModel> data) {
+                mAdapter.addItems(data);
+            }
+        });
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override

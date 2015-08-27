@@ -1,15 +1,16 @@
 package com.grocery.app.tabswipe.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toolbar;
 
-import com.parse.Parse;
-import com.parse.ParseObject;
+import com.parse.ParseAnonymousUtils;
+import com.parse.ParseUser;
 
 import com.grocery.app.tabswipe.R;
 import com.grocery.app.tabswipe.slidetabs.SlidingTabLayout;
@@ -24,22 +25,25 @@ public class MainActivity extends ActionBarActivity {
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[] = {"Buy", "Post"};
-    int Numboftabs = 2;
+    CharSequence Titles[] = {"Buy", "Post", "Settings"};
+    int Numboftabs = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, getString(R.string.application_id),
-                getString(R.string.client_id));
 
         DataManipulationUtilities.initializeData(MainActivity.this);
         DataManipulationUtilities.initializeBuyerItems(MainActivity.this);
         setContentView(R.layout.activity_main);
 
         getActionBar().hide();
+
+        if (ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
 

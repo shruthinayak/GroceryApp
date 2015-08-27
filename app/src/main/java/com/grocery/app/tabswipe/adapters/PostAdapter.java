@@ -51,6 +51,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         notifyItemInserted(mDataset.size());
     }
 
+    public void addItems(ArrayList<DataModel> data) {
+        int oldPos = mDataset.size();
+        mDataset.addAll(data);
+        notifyItemRangeRemoved(oldPos, data.size());
+    }
+
     public void remove(DataModel item) {
         int position = mDataset.indexOf(item);
         int q = Integer.parseInt(item.getQuantity());
